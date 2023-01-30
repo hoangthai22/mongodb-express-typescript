@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { connectToDatabase } from './databaseConnection';
 import { productRoute } from './routes/product.route';
 import { categoryRoute } from './routes/category.route';
-
+import cors from 'cors';
 dotenv.config();
 
 const HOST = process.env.HOST || 'http://localhost';
@@ -12,7 +12,7 @@ const PORT = parseInt(process.env.PORT || '4500');
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(cors({ origin: '*' }))
 app.use('/', productRoute());
 app.use('/', categoryRoute());
 app.get('/', (_req, res) => {

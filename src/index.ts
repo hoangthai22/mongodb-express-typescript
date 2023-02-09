@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 // import formidableMiddleware from 'express-formidable';
 import * as admin from 'firebase-admin';
-import firebaseAccountCredentials from "./shoe-express-types-firebase-adminsdk-m1mk3-8d14c75371.json";
+// import firebaseAccountCredentials from "./shoe-express-types-firebase-adminsdk-m1mk3-8d14c75371.json";
 import cors from 'cors';
 import { connectToDatabase } from './databaseConnection';
 import { productRoute } from './routes/product.route';
@@ -11,11 +11,22 @@ dotenv.config();
 const HOST = process.env.HOST || 'http://localhost';
 const PORT = parseInt(process.env.PORT || '4500');
 
-const serviceAccount = firebaseAccountCredentials as admin.ServiceAccount
-
+// const serviceAccount = firebaseAccountCredentials as admin.ServiceAccount
+const privateKey = JSON.parse(`{
+    "type": "service_account",
+    "project_id": "shoe-express-types",
+    "private_key_id": "${process.env.PRIVATE_KEY_ID}",
+    "private_key": "${process.env.PRIVATE_KEY}",
+    "client_email": "firebase-adminsdk-m1mk3@shoe-express-types.iam.gserviceaccount.com",
+    "client_id": "110971450323003708220",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-m1mk3%40shoe-express-types.iam.gserviceaccount.com"
+  }`);
 const app = express();
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert(privateKey),
 
 });
 

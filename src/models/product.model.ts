@@ -12,8 +12,8 @@ export interface IProductModel extends IProduct, Document { }
 const ProductSchema: Schema = new Schema(
     {
         name: { type: String, required: true },
-        image: { type: String, required: true },
-        quantity: { type: Number, required: false },
+        image: { type: String, required: false },
+        quantity: { type: Number, required: true },
         price: { type: Number, required: true },
         status: { type: Boolean, required: false },
         category: { type: Schema.Types.ObjectId, required: true, ref: 'Category' }

@@ -2,9 +2,30 @@ import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import categoryModel from '../models/category.model';
 
-const getAllCategories = async (_req: Request, res: Response,) => {
+const getAllCategories = async (req: Request, res: Response,) => {
+    let limit = 10;
+    let page = 1;
+    if (req.query.limit) {
+        limit = parseInt(req.query.limit.toString());
+    }
+    if (req.query.page) {
+        page = parseInt(req.query.page.toString());
+    }
+    const skip = (page - 1) * limit;
+    const total = await categoryModel.countDocuments();
+
     return categoryModel.find()
-        .then((categories) => res.status(200).json({ categories }))
+        .populate({ path: 'category', select: ['-createdAt', '-updatedAt', '-status'] })
+        .sort({ createdAt: -1 })
+        .select(['-createdAt', '-updatedAt'])
+        .skip(skip)
+        .limit(limit)
+        .exec()
+        .then((categories) => res.status(200).json({
+            categories, total: Math.ceil(total / limit),
+            limit,
+            page
+        }))
         .catch((error) => res.status(500).json({ error }));
 };
 

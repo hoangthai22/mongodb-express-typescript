@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { verifyToken } from "../middlewares/authJwt";
 import { createCategory, deleteCategory, getAllCategories, getCategory, updateCategory } from '../controllers/category.controller';
 import multer from 'multer';
 const categoryRoute = () => {
@@ -8,7 +9,7 @@ const categoryRoute = () => {
 
     router.post('/category', upload.single('image'), createCategory);
 
-    router.get('/categories', getAllCategories);
+    router.get('/categories', verifyToken, getAllCategories);
 
     router.get('/category/:id', getCategory);
 

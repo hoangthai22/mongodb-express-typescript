@@ -7,6 +7,7 @@ import cors from 'cors';
 import { connectToDatabase } from './databaseConnection';
 import { productRoute } from './routes/product.route';
 import { categoryRoute } from './routes/category.route';
+import { authRoute } from './routes/auth.routes';
 dotenv.config();
 const HOST = process.env.HOST || 'http://localhost';
 const PORT = parseInt(process.env.PORT || '4500');
@@ -36,6 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', productRoute());
 app.use('/', categoryRoute());
+app.use('/', authRoute());
 app.get('/', (_req, res) => {
     return res.json({ message: 'Hello World!' });
 });

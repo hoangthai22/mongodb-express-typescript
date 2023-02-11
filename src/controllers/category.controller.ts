@@ -49,7 +49,7 @@ const deleteCategory = async (req: Request, res: Response,) => {
         .catch((error) => res.status(500).json({ error }));
 
 }
-const updateCategory = (req: Request, res: Response) => {
+const updateCategory = async (req: Request, res: Response) => {
     const categoryId = req.params.id;
 
     return categoryModel.findById(categoryId)
